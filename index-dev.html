@@ -41,13 +41,17 @@
             <thead>
               <tr class="header">
                 <th>id</th>
+                <th>label</th>
                 <th>name</th>
+                <th>desc</th>
               </tr>
             </thead>
             <tbody data-bind="foreach: map.paths">
               <tr data-bind="attr: {'data-region-id': originalId}">
                 <td data-bind="text: id"></td>
+                <td data-bind="text: label"></td>
                 <td data-bind="text: name"></td>
+                <td data-bind="text: desc"></td>
               </tr>
             </tbody>
           </table>
@@ -68,8 +72,10 @@
     <div class="card-footer"></div>
   </div>
   <div id="edit-dialog">
-    <div><label for="edit-dialog-id">Id</label><input id="edit-dialog-id"/></div>
-    <div><label for="edit-dialog-name">Name</label><input id="edit-dialog-name"/></div>
+    <div><label for="edit-dialog-id">id</label><input id="edit-dialog-id"/></div>
+    <div><label for="edit-dialog-label">label</label><input id="edit-dialog-label"/></div>
+    <div><label for="edit-dialog-name">name</label><input id="edit-dialog-name"/></div>
+    <div><label for="edit-dialog-desc">desc</label><input id="edit-dialog-desc"/></div>
   </div>
 </body>
 </html>

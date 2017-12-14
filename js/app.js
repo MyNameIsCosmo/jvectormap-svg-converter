@@ -144,6 +144,8 @@ var app = (function(){
   function MapRegion(data){
     this.originalId = data.id || 'id'+MapRegion.uid;
     this.id = ko.observable(this.originalId);
+    this.label = ko.observable(data.label || "");
+    this.desc = ko.observable(data.desc || "");
     this.name = ko.observable(data.name || 'name'+MapRegion.uid);
     this.path = ko.observable(data.path);
     if (!data.id || !data.name)  {
@@ -163,6 +165,8 @@ var app = (function(){
     for (var i = 0; i < this.paths().length; i++) {
       paths[this.paths()[i].id()] = {
         name: this.paths()[i].name(),
+        label: this.paths()[i].label(),
+        desc: this.paths()[i].desc(),
         path: this.paths()[i].path()
       }
     }
@@ -218,8 +222,11 @@ var app = (function(){
         pathStr = $(this).attr('d');
       }
       that.paths.push(new MapRegion({
+        // FIXME: These need to be escaped...
         id: $(this).attr(settings.idAttribute || 'id') || null,
-        name: $(this).attr(settings.nameAttribute || 'name') || null,
+        name: $(this).attr(settings.nameAttribute || 'name') || $(this).children('title').html()  || null,
+        desc: $(this).children('desc').html() || null,
+        label: $(this).attr('inkscape:label') || null,
         path: SvgUtils.applyTransformToPath( pathStr, SvgUtils.parseTransform(fullTransform) )
       }));
     });
@@ -241,7 +248,9 @@ var app = (function(){
       buttons: {
         OK: function() {
           that.path.id( $('#edit-dialog-id').val() );
+          that.path.label( $('#edit-dialog-label').val() );
           that.path.name( $('#edit-dialog-name').val() );
+          that.path.desc( $('#edit-dialog-desc').val() );
           $( this ).dialog( "close" );
         },
         Cancel: function() {
@@ -255,7 +264,9 @@ var app = (function(){
     this.path = map.getPathById( regionId );
     $('#edit-dialog').dialog('open');
     $('#edit-dialog-id').val(this.path.id());
+    $('#edit-dialog-label').val(this.path.label());
     $('#edit-dialog-name').val(this.path.name());
+    $('#edit-dialog-desc').val(this.path.desc());
   }
 
 
