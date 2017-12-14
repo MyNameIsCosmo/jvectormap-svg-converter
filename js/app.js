@@ -227,7 +227,7 @@ var app = (function(){
 
   Map.prototype.createJvmMap = function(config){
     $.fn.vectorMap('addMap', 'map', this.getConfig());
-    return new jvm.WorldMap(config);
+    return new jvm.Map(config);
   };
 
 
