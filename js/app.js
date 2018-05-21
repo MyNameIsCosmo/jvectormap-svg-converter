@@ -203,10 +203,12 @@ var app = (function(){
     }
     svgEl.find('path, polygon').each(function(i){
       var fullTransform = '',
+          pathTransform,
           pathStr,
           points,
           i;
 
+      console.log($(this));
       $(this).parents().add(this).each(function(){
         if ($(this).attr('transform')) {
           fullTransform += ' '+$(this).attr('transform');
@@ -221,13 +223,20 @@ var app = (function(){
       } else {
         pathStr = $(this).attr('d');
       }
+      pathTransform = pathStr;
+      if (fullTransform != ''){
+        console.log(pathTransform);
+        console.log(fullTransform);
+        pathTransform = SvgUtils.applyTransformToPath( pathStr, SvgUtils.parseTransform(fullTransform));
+        console.log(pathTransform);
+      }
       that.paths.push(new MapRegion({
         // FIXME: These need to be escaped...
         id: $(this).attr(settings.idAttribute || 'id') || null,
         name: $(this).attr(settings.nameAttribute || 'name') || $(this).children('title').html()  || null,
         desc: $(this).children('desc').html() || null,
         label: $(this).attr('inkscape:label') || null,
-        path: SvgUtils.applyTransformToPath( pathStr, SvgUtils.parseTransform(fullTransform) )
+        path: pathTransform
       }));
     });
   }

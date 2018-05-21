@@ -8,6 +8,7 @@
 https://stackoverflow.com/questions/21128634/jquery-file-upload-preview-image
 <br />
 <input id="fileupload" type="file" name="files[]" data-url="" multiple>
+<img  id="some-image" src="#" />
 
 
 <script src="js/jquery-1.8.2.min.js"></script>
@@ -46,7 +47,8 @@ https://stackoverflow.com/questions/21128634/jquery-file-upload-preview-image
 </script>
 <script>
 $(function () {
-    $('#fileupload').fileupload({
+    $('#fileupload')
+      .fileupload({
         dataType: 'json',
         disableImageResize: true,
         add: function (e, data) {
@@ -64,7 +66,14 @@ $(function () {
             console.log(e);
             console.log(data);
         }
-    });
+      })
+      .bind('fileuploadprocessalways', function(e, data)
+      {
+        console.log(data);
+        var canvas = data.files[0].preview;
+        var dataURL = canvas.toDataURL();
+        $("#some-image").css("background-image", 'url(' + dataURL +')');
+      })
 });
 </script>
 </body> 
